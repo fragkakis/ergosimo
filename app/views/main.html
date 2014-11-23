@@ -1,0 +1,38 @@
+<div class="row">
+    
+    <span>Πρόσθεσε ένα εργόσημο για τον<span>
+  	
+    <div class="btn-group" dropdown >
+      <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle>{{monthDropdownLabel}} <span class="caret"></span>
+      
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li ng-repeat="month in months"><a ng-click="selectMonth(month)">{{month}}</a></li>
+      </ul>
+    </div>
+
+    <span> του έτους </span>
+
+    <div class="btn-group" dropdown >
+      <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle>{{yearDropdownLabel}} <span class="caret"></span>
+      
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li ng-repeat="year in years"><a ng-click="selectYear(year)">{{year}}</a></li>
+      </ul>
+    </div>
+
+    <span> μέρες </span>
+
+    <input type="number" ng-model="days" >
+
+  	<button type="button" class="btn btn-default btn-lg" ng-click="addErgosimo()">
+    	<span class="glyphicon glyphicon-plus"></span>
+    </button>
+</div>
+
+<div class="row">
+  <div ng-repeat="ergosimo in ergosima">
+  	{{ergosimo.month}} {{ergosimo.year}} ({{ergosimo.days}})
+  </div>
+</div>
