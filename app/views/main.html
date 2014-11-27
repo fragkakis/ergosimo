@@ -1,38 +1,42 @@
 <div class="row">
-    
-    <span>Πρόσθεσε ένα εργόσημο για τον<span>
-  	
-    <div class="btn-group" dropdown >
-      <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle>{{monthDropdownLabel}} <span class="caret"></span>
-      
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li ng-repeat="month in months"><a ng-click="selectMonth(month)">{{month}}</a></li>
-      </ul>
-    </div>
+  <div class="col-md-4">Ημερομηνία έκδοσης</div>
+  <div class="col-md-4">
+    <span class="input-group">
+      <input type="text" class="form-control" datepicker-popup="dd/MM/yyyy" ng-model="dateOfIssue" is-open="dateOfIssueOpened" min-date="'2012-01-01'" max-date="'2015-06-22'" date-disabled="disableWeekends(date, mode)" ng-required="true" show-button-bar="false" />
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-default" ng-click="openDateOfIssue($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+      </span>
+    </span>
+  </div>
+</div> 
 
-    <span> του έτους </span>
+<div class="row rowTopBuffer20">
+  <div class="col-md-4">Ημερομηνία εξαργύρωσης</div>
+  <div class="col-md-4">
+    <span class="input-group">
+      <input type="text" class="form-control" datepicker-popup="dd/MM/yyyy" ng-model="dateOfPay" is-open="dateOfPayOpened" min-date="'2012-01-01'" max-date="'2015-06-22'" date-disabled="disableWeekends(date, mode)" ng-required="true" show-button-bar="false" />
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-default" ng-click="openDateOfPay($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+      </span>
+    </span>
+  </div>
+</div>  
 
-    <div class="btn-group" dropdown >
-      <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle>{{yearDropdownLabel}} <span class="caret"></span>
-      
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li ng-repeat="year in years"><a ng-click="selectYear(year)">{{year}}</a></li>
-      </ul>
-    </div>
-
-    <span> μέρες </span>
-
-    <input type="number" ng-model="days" >
-
-  	<button type="button" class="btn btn-default btn-lg" ng-click="addErgosimo()">
-    	<span class="glyphicon glyphicon-plus"></span>
-    </button>
+<div class="row rowTopBuffer20">
+  <div class="col-md-4">Ασφαλιστικές εισφορές</div>
+  <div class="col-md-4">
+    <input type="number" ng-model="amount" >
+  </div>
+  <div class="col-md-2">
+    <button type="button" class="btn btn-default btn-lg" ng-click="addErgosimo()">
+      <span class="glyphicon glyphicon-plus"></span>
+    </button>  
+  </div>
+  
 </div>
 
-<div class="row">
+<div class="row rowTopBuffer20">
   <div ng-repeat="ergosimo in ergosima">
-  	{{ergosimo.month}} {{ergosimo.year}} ({{ergosimo.days}})
+  	{{ergosimo.dateOfIssue}} {{ergosimo.dateOfPay}} ({{ergosimo.amount}})
   </div>
 </div>

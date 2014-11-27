@@ -9,76 +9,65 @@
  */
 angular.module('ergosimoApp').controller('MainCtrl', function ($scope, $log) {
 
-    $scope.init = function() {
-        $log.log('Initing');
-        resetSelectedMonth();
-        resetSelectedYear();
-        resetDays();
-    }
+  $scope.init = function() {
+    $log.log('Initing');
+    resetDateOfIssue();
+    resetDateOfPay();
+    resetAmount();
+  }
 
   $scope.ergosima = [];
+  $scope.today = new Date();
 
   $scope.addErgosimo = function () {
   	var ergosimo = {
   		number: $scope.ergosima.length + 1,
-      month: $scope.selectedMonth,
-      year: $scope.selectedYear,
-      days: $scope.days
+      dateOfIssue: $scope.dateOfIssue,
+      dateOfPay: $scope.dateOfPay,
+      amount: $scope.amount
   	}
   	$scope.ergosima.push(ergosimo);
 
-    resetSelectedMonth();
-    resetSelectedYear();
-    resetDays();
+    resetDateOfIssue();
+    resetDateOfPay();
+    resetAmount();
   }
 
-  $scope.months = [
-    'Ιανουάριος',
-    'Φεβρουάριος',
-    'Μάρτης',
-    'Απρίλης',
-    'Μάης',
-    'Ιούνιος',
-    'Ιούλιος',
-    'Αύγουστος',
-    'Σεπτέμβριος',
-    'Οκτώβριος',
-    'Νοέμβριος',
-    'Δεκέμβριος'
-  ];
-
-  $scope.years = [
-    '2012',
-    '2013',
-    '2014'
-  ];
-
-  $scope.selectMonth = function(month) {
-    $log.log('Selected month ', month);
-    $scope.selectedMonth = month;
-    $scope.monthDropdownLabel = month;
+  var resetDateOfIssue = function() {
+    $scope.dateOfIssue = null;
   }
 
-  $scope.selectYear = function(year) {
-    $log.log('Selected year ', year);
-    $scope.selectedYear = year;
-    $scope.yearDropdownLabel = year;
+  var resetDateOfPay = function() {
+    $scope.dateOfPay = null;
   }
 
-  var resetSelectedMonth = function() {
-    $scope.selectedMonth = null;
-    $scope.monthDropdownLabel = 'Επιλέξτε μήνα';
-  }
-
-  var resetSelectedYear = function() {
-    $scope.selectedYear = null;
-    $scope.yearDropdownLabel = 'Επιλέξτε έτος';
-  }
-
-  var resetDays = function() {
-    $scope.days = null;
+  var resetAmount = function() {
+    $scope.amount = null;
   }
 
   $scope.init();
 
-  });
+
+  $scope.disableWeekends = function(date, mode) {
+    return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+  };
+
+  // Date of issue
+  $scope.openDateOfIssue = function($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+
+    $scope.dateOfIssueOpened = true;
+  };
+
+  // Date of pay
+  $scope.openDateOfPay = function($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+
+    $scope.dateOfPayOpened = true;
+  };
+
+});
+
+
