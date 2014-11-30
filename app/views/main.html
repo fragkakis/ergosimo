@@ -36,7 +36,21 @@
 </div>
 
 <div class="row rowTopBuffer20">
-  <div ng-repeat="ergosimo in ergosima">
-  	{{ergosimo.dateOfIssue}} {{ergosimo.dateOfPay}} ({{ergosimo.amount}})
-  </div>
+  <table class="table-bordered rowTopBuffer20 col-md-12">
+    <tr>
+      <th class="text-center">Μήνας</th>
+      <th class="text-center">Ασφαλιστικές εισφορές</th>
+      <th class="text-center">Τριμήνου</th>
+      <th class="text-center">Μέρες Τριμήνου</th>
+      <th class="text-center">Μέρες Ασφάλισης</th>
+    </tr>
+
+    <tr ng-repeat="ergosimo in ergosima | orderBy:'dateOfPay'" class="text-right">
+      <td>{{ergosimo.dateOfPay | date:'MMM yyyy'}}</td>
+      <td>{{ergosimo.amount}}</td>
+      <td ng-if="isFirstOfTrimester(ergosimo)" rowspan="monthsOfTrimester(ergosimo)">{{trimesterAmount(ergosimo)}}</td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
 </div>

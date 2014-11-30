@@ -16,7 +16,24 @@ angular.module('ergosimoApp').controller('MainCtrl', function ($scope, $log) {
     resetAmount();
   }
 
-  $scope.ergosima = [];
+  $scope.ergosima = [
+  {
+    dateOfIssue: new Date("October 13, 2014 11:13:00"),
+    dateOfPay: new Date("October 13, 2014 11:13:00"),
+    amount: 100
+  },
+  {
+    dateOfIssue: new Date("September 12, 2014 11:13:00"),
+    dateOfPay: new Date("September 12, 2014 11:13:00"),
+    amount: 100
+  },
+  {
+    dateOfIssue: new Date("November 14, 2014 11:13:00"),
+    dateOfPay: new Date("November 14, 2014 11:13:00"),
+    amount: 100
+  }
+  ];
+
   $scope.today = new Date();
 
   $scope.addErgosimo = function () {
@@ -67,6 +84,48 @@ angular.module('ergosimoApp').controller('MainCtrl', function ($scope, $log) {
 
     $scope.dateOfPayOpened = true;
   };
+
+  $scope.isFirstOfTrimester = function(ergosimo) {
+    if(isInQuarter(ergosimo, 2014, 1)) {
+      return isFirstOfQuarter(ergosimo, 2014, 1);
+    }
+    return true;
+  }
+
+  var isInQuarter = function(ergosimo, year, quarterNumber) {
+    return (ergosimo.dateOfPay.getYear() == year && ergosimo.dateOfPay.getMonth() == quarterNumber * 3 + 0)
+      || (ergosimo.dateOfPay.getYear() == year && ergosimo.dateOfPay.getMonth() == quarterNumber * 3 + 1)
+      || (ergosimo.dateOfPay.getYear() == year && ergosimo.dateOfPay.getMonth() == quarterNumber * 3 + 2);
+  }
+
+  var isFirstOfQuarter = function(ergosimo, year, quarterNumber) {
+
+    var quarterErgosima = $scope.ergosima.filter(function(ergosimo) {
+      return ergosimo.dateOfPay.getYear() == year
+        && ergosimo.dateOfPay.getMonth() >= quarterNumber * 3
+        && ergosimo.dateOfPay.getMonth() < (quarterNumber + 1) * 3
+    });
+    
+    quarterErgosima.sort(function(erg1, erg2) {
+      if (erg1.dateOfPay > erg2.dateOfPay) {
+        return 1;
+      } else if (erg1.dateOfPay < erg2.dateOfPay) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
+    return quarterErgosima[0] == ergosimo;
+  }
+
+  $scope.monthsOfTrimester = function(ergosimo) {
+    return 1;
+  }
+
+  $scope.trimesterAmount = function(ergosimo) {
+    return null;
+  }
 
 });
 
