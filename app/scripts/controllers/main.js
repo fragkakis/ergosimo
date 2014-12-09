@@ -7,29 +7,35 @@
  * # MainCtrl
  * Controller of the ergosimoApp
  */
-angular.module('ergosimoApp').controller('MainCtrl', function ($scope, $log) {
+angular.module('ergosimoApp').controller('MainCtrl', function ($scope) {
 
   $scope.init = function() {
-    $log.log('Initing');
+    // $log.log('Initing');
     resetDateOfIssue();
     resetDateOfPay();
     resetAmount();
-  }
+  };
+
+  $scope.awesomeThings = [
+      'HTML5 Boilerplate',
+      'AngularJS',
+      'Karma'
+    ];
 
   $scope.ergosima = [
   {
-    dateOfIssue: new Date("October 13, 2014 11:13:00"),
-    dateOfPay: new Date("October 13, 2014 11:13:00"),
+    dateOfIssue: new Date('October 13, 2014 11:13:00'),
+    dateOfPay: new Date('October 13, 2014 11:13:00'),
     amount: 100
   },
   {
-    dateOfIssue: new Date("September 12, 2014 11:13:00"),
-    dateOfPay: new Date("September 12, 2014 11:13:00"),
+    dateOfIssue: new Date('September 12, 2014 11:13:00'),
+    dateOfPay: new Date('September 12, 2014 11:13:00'),
     amount: 100
   },
   {
-    dateOfIssue: new Date("November 14, 2014 11:13:00"),
-    dateOfPay: new Date("November 14, 2014 11:13:00"),
+    dateOfIssue: new Date('November 14, 2014 11:13:00'),
+    dateOfPay: new Date('November 14, 2014 11:13:00'),
     amount: 100
   }
   ];
@@ -42,28 +48,27 @@ angular.module('ergosimoApp').controller('MainCtrl', function ($scope, $log) {
       dateOfIssue: $scope.dateOfIssue,
       dateOfPay: $scope.dateOfPay,
       amount: $scope.amount
-  	}
+  	};
   	$scope.ergosima.push(ergosimo);
 
     resetDateOfIssue();
     resetDateOfPay();
     resetAmount();
-  }
+  };
 
   var resetDateOfIssue = function() {
     $scope.dateOfIssue = null;
-  }
+  };
 
   var resetDateOfPay = function() {
     $scope.dateOfPay = null;
-  }
+  };
 
   var resetAmount = function() {
     $scope.amount = null;
-  }
+  };
 
   $scope.init();
-
 
   $scope.disableWeekends = function(date, mode) {
     return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
@@ -86,26 +91,37 @@ angular.module('ergosimoApp').controller('MainCtrl', function ($scope, $log) {
   };
 
   $scope.isFirstOfTrimester = function(ergosimo) {
-    if(isInQuarter(ergosimo, 2014, 1)) {
-      return isFirstOfQuarter(ergosimo, 2014, 1);
+    if($scope.isInQuarter(ergosimo, 2014, 1)) {
+      return $scope.isFirstOfQuarter(ergosimo, 2014, 1);
     }
     return true;
-  }
+  };
 
-  var isInQuarter = function(ergosimo, year, quarterNumber) {
-    return (ergosimo.dateOfPay.getYear() == year && ergosimo.dateOfPay.getMonth() == quarterNumber * 3 + 0)
-      || (ergosimo.dateOfPay.getYear() == year && ergosimo.dateOfPay.getMonth() == quarterNumber * 3 + 1)
-      || (ergosimo.dateOfPay.getYear() == year && ergosimo.dateOfPay.getMonth() == quarterNumber * 3 + 2);
-  }
+  $scope.isInQuarter = function(ergosimo, year, quarterNumber) {
+    return (ergosimo.dateOfPay.getFullYear() === year && ergosimo.dateOfPay.getMonth() === quarterNumber * 3 + 0) || 
+    (ergosimo.dateOfPay.getFullYear() === year && ergosimo.dateOfPay.getMonth() === quarterNumber * 3 + 1) ||
+    (ergosimo.dateOfPay.getFullYear() === year && ergosimo.dateOfPay.getMonth() === quarterNumber * 3 + 2);
+  };
 
-  var isFirstOfQuarter = function(ergosimo, year, quarterNumber) {
+  $scope.isFirstOfQuarter = function(ergosimo, year, quarterNumber) {
+
+    var firstMonthOfQuarter = quarterNumber * 3;
+    var lastMonthOfQuarter = ( ( quarterNumber + 1 ) * 3 ) - 1;
 
     var quarterErgosima = $scope.ergosima.filter(function(ergosimo) {
-      return ergosimo.dateOfPay.getYear() == year
-        && ergosimo.dateOfPay.getMonth() >= quarterNumber * 3
-        && ergosimo.dateOfPay.getMonth() < (quarterNumber + 1) * 3
+
+      
+
+      return ergosimo.dateOfPay.getFullYear() === year &&
+      ergosimo.dateOfPay.getMonth() >= firstMonthOfQuarter && 
+      ergosimo.dateOfPay.getMonth() <= lastMonthOfQuarter;
     });
-    
+  
+    console.log('ergosimo.dateOfPay: ' + ergosimo.dateOfPay);
+    console.log('ergosimo.dateOfPay.getMonth(): ' + ergosimo.dateOfPay.getMonth());
+    console.log('firstMonthOfQuarter: ' + firstMonthOfQuarter);
+    console.log('lastMonthOfQuarter: ' + lastMonthOfQuarter);
+
     quarterErgosima.sort(function(erg1, erg2) {
       if (erg1.dateOfPay > erg2.dateOfPay) {
         return 1;
@@ -115,18 +131,16 @@ angular.module('ergosimoApp').controller('MainCtrl', function ($scope, $log) {
         return 0;
       }
     });
-
-    return quarterErgosima[0] == ergosimo;
-  }
+    
+    return quarterErgosima[0] === ergosimo;
+  };
 
   $scope.monthsOfTrimester = function(ergosimo) {
     return 1;
-  }
+  };
 
   $scope.trimesterAmount = function(ergosimo) {
     return null;
-  }
+  };
 
 });
-
-
