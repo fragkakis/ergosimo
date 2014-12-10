@@ -45,10 +45,12 @@
       <th class="text-center">Μέρες Ασφάλισης</th>
     </tr>
 
+    <tr ng-repeat="ergosimo in ergosima | orderBy:'dateOfPay'" class="text-right">    
+
     <tr ng-repeat="ergosimo in ergosima | orderBy:'dateOfPay'" class="text-right">
       <td>{{ergosimo.dateOfPay | date:'MMM yyyy'}}</td>
       <td>{{ergosimo.amount}}</td>
-      <td ng-if="isFirstOfTrimester(ergosimo)" rowspan="monthsOfTrimester(ergosimo)">{{trimesterAmount(ergosimo)}}</td>
+      <td ng-if="isFirstOfItsCorrespondingQuarter(ergosimo)" rowspan="{{monthsOfQuarter(ergosimo)}}">{{quarterAmount(ergosimo)}}</td>
       <td></td>
       <td></td>
     </tr>

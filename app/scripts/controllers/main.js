@@ -90,11 +90,17 @@ angular.module('ergosimoApp').controller('MainCtrl', function ($scope) {
     $scope.dateOfPayOpened = true;
   };
 
-  $scope.isFirstOfTrimester = function(ergosimo) {
-    if($scope.isInQuarter(ergosimo, 2014, 1)) {
-      return $scope.isFirstOfQuarter(ergosimo, 2014, 1);
-    }
-    return true;
+  $scope.isFirstOfItsCorrespondingQuarter = function(ergosimo) {
+
+    return $scope.isFirstOfQuarter(ergosimo, getErgosimoYear(ergosimo), $scope.calculateQuarterNumber(ergosimo));    
+  };
+
+  var getErgosimoYear = function(ergosimo) {
+    return ergosimo.dateOfPay.getFullYear();
+  };
+
+  $scope.calculateQuarterNumber = function(ergosimo) {
+    return Math.floor(ergosimo.dateOfPay.getMonth()/3);
   };
 
   $scope.isInQuarter = function(ergosimo, year, quarterNumber) {
@@ -109,37 +115,45 @@ angular.module('ergosimoApp').controller('MainCtrl', function ($scope) {
     var lastMonthOfQuarter = ( ( quarterNumber + 1 ) * 3 ) - 1;
 
     var quarterErgosima = $scope.ergosima.filter(function(ergosimo) {
-
-      
-
       return ergosimo.dateOfPay.getFullYear() === year &&
       ergosimo.dateOfPay.getMonth() >= firstMonthOfQuarter && 
       ergosimo.dateOfPay.getMonth() <= lastMonthOfQuarter;
     });
-  
-    console.log('ergosimo.dateOfPay: ' + ergosimo.dateOfPay);
-    console.log('ergosimo.dateOfPay.getMonth(): ' + ergosimo.dateOfPay.getMonth());
-    console.log('firstMonthOfQuarter: ' + firstMonthOfQuarter);
-    console.log('lastMonthOfQuarter: ' + lastMonthOfQuarter);
 
-    quarterErgosima.sort(function(erg1, erg2) {
-      if (erg1.dateOfPay > erg2.dateOfPay) {
-        return 1;
-      } else if (erg1.dateOfPay < erg2.dateOfPay) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
-    
-    return quarterErgosima[0] === ergosimo;
+    // console.log('firstMonthOfQuarter: ' + firstMonthOfQuarter);
+    // console.log('lastMonthOfQuarter: ' + lastMonthOfQuarter);
+    // console.log('ergosimo.dateOfPay: ' + ergosimo.dateOfPay);
+
+    if(quarterErgosima.length > 0) {
+      // sort chronologically  
+      quarterErgosima.sort(function(erg1, erg2) {
+        
+        if (erg1.dateOfPay > erg2.dateOfPay) {
+          return 1;
+        } else if (erg1.dateOfPay < erg2.dateOfPay) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });  
+
+      // console.log('ergosimo.dateOfPay.getMonth(): ' + ergosimo.dateOfPay.getMonth());
+      // console.log('quarterErgosima[0].dateOfPay: ' + quarterErgosima[0] .dateOfPay)
+      
+      return quarterErgosima[0].dateOfPay.getTime() === ergosimo.dateOfPay.getTime();  
+    } else {
+      // this ergosimo is not part of the quarter
+      // console.log('There were no ergosima in this quarter');
+      return false;
+    }
+  
   };
 
-  $scope.monthsOfTrimester = function(ergosimo) {
+  $scope.ergosimaOfItsCorrespondingQuarter = function(ergosimo) {
     return 1;
   };
 
-  $scope.trimesterAmount = function(ergosimo) {
+  $scope.quarterAmount = function(ergosimo) {
     return null;
   };
 
